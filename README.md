@@ -1,6 +1,7 @@
 # mdn-cli
 
-A tiny CLI for searching the Mozilla Developer Network docs and displaying them in terminal.
+A command line tool for displaying the top DuckDuckGo search result for a MDN
+query in your terminal. Automatically paginated.
 
 ```
 $ mdn accept header
@@ -20,6 +21,14 @@ image, video or a script.
 Results via DuckDuckGo's [Instant Answer] API.
 
 [Instant Answer]: https://duckduckgo.com/api
+
+Crates:
+
+- [`html2text`](https://lib.rs/html2text)
+- [`pager`](https://lib.rs/pager)
+- [`scraper`](https://lib.rs/scraper)
+- [`surf`](https://lib.rs/surf)
+- [`term_size`](https://lib.rs/term_size)
 
 ## Installation
 

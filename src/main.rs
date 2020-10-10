@@ -13,7 +13,8 @@ async fn main() -> Result<(), surf::Error> {
         .collect();
 
     if args.len() == 1 {
-        eprintln!(r#"
+        eprintln!(
+            r#"
 mdn
 Search the Mozilla Developer Network documentation for a given query
 and display the top result as markdown in your terminal.
@@ -21,7 +22,8 @@ and display the top result as markdown in your terminal.
 USAGE:
     mdn http accept header
     mdn queryselectorall
-"#);
+"#
+        );
         std::process::exit(1);
     }
 
