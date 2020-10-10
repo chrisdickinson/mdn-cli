@@ -11,6 +11,20 @@ async fn main() -> Result<(), surf::Error> {
     let args: Vec<String> = std::iter::once("! site:developer.mozilla.org".to_string())
         .chain(std::env::args().skip(1))
         .collect();
+
+    if args.len() == 1 {
+        eprintln!(r#"
+mdn
+Search the Mozilla Developer Network documentation for a given query
+and display the top result as markdown in your terminal.
+
+USAGE:
+    mdn http accept header
+    mdn queryselectorall
+"#);
+        std::process::exit(1);
+    }
+
     let args = args.join(" ");
     let query = urlencoding::encode(args.as_str());
 
@@ -37,8 +51,11 @@ async fn main() -> Result<(), surf::Error> {
         .unwrap_or_else(Default::default);
 
     if location.is_empty() {
-        std::io::stdout().write_all(b"\rNo results.")?;
-        return Ok(());
+        loading.swap(false, Ordering::Relaxed);
+        async_std::task::sleep(Duration::from_millis(200)).await;
+
+        std::io::stderr().write_all(b" No results.")?;
+        std::process::exit(1);
     }
 
     let body = surf::get(location.as_str()).recv_string().await?;
