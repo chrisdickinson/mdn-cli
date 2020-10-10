@@ -8,11 +8,27 @@ async fn main() -> Result<(), surf::Error> {
     let args = args.join(" ");
     let query = urlencoding::encode(args.as_str());
 
+    if false {
+    async_std::task::spawn(async {
+        for chr in "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏".chars().cycle() {
+            write!(std::io::stdout(), "\r {} (fetching results from DuckDuckGo...)\r", chr);
+            async_std::task::sleep(std::time::Duration::from_millis(166));
+        }
+    });
+    }
+
     let url = format!("https://api.duckduckgo.com/?q={}&format=json", query);
-    let response = surf::get(url.as_str()).await?;
+    let mut response = surf::get(url.as_str()).await?;
     let location = response.header("location")
         .map(|xs| xs.as_str().to_owned())
         .unwrap_or_else(Default::default);
+
+    eprintln!("res={}", response.body_string().await?);
+    if location.is_empty() {
+        std::io::stdout().write_all(b"\r")?;
+        std::io::stdout().write_all(b"No results.");
+        return Ok(())
+    }
 
     let body = surf::get(location.as_str()).recv_string().await?;
 
@@ -36,6 +52,7 @@ async fn main() -> Result<(), surf::Error> {
         120
     };
 
+    std::io::stdout().write_all(b"\r")?;
     std::io::stdout().write_all(html2text::from_read(html.as_bytes(), term_width).as_bytes())?;
 
     Ok(())

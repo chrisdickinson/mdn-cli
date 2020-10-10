@@ -15,10 +15,16 @@ image, video or a script.
 [...]
 ```
 
-# Installation
+## Colophon
+
+Results via DuckDuckGo's [Instant Answer] API.
+
+[Instant Answer]: https://duckduckgo.com/api
+
+## Installation
 
 TODO
 
-# License
+## License
 
 MIT
