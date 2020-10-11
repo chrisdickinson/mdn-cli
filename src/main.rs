@@ -1,3 +1,4 @@
+use bat::{Input, PagingMode, PrettyPrinter};
 use std::io::Write;
 use std::sync::{
     atomic::{AtomicBool, Ordering},
@@ -89,10 +90,20 @@ USAGE:
     loading.swap(false, Ordering::Relaxed);
     async_std::task::sleep(Duration::from_millis(200)).await;
 
-    #[cfg(unix)]
-    pager::Pager::with_pager("less -r").setup();
-    std::io::stdout().write_all(b"\x1b[4m(Results from DuckDuckGo)\x1b[0m\n\n")?;
-    std::io::stdout().write_all(html2text::from_read(html.as_bytes(), term_width).as_bytes())?;
+    let markdown = html2text::from_read(html.as_bytes(), term_width);
+    PrettyPrinter::new()
+        .pager("less")
+        .paging_mode(PagingMode::QuitIfOneScreen)
+        .header(true)
+        .grid(true)
+        .input(
+            Input::from_bytes(markdown.as_bytes())
+                .name("mdn.md")
+                .title(url)
+                .kind("Search Result"),
+        )
+        .print()
+        .unwrap();
 
     Ok(())
 }
