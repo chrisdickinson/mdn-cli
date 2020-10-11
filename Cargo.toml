@@ -3,6 +3,10 @@ name = "mdn"
 version = "0.1.2"
 authors = ["Chris Dickinson <christopher.s.dickinson@gmail.com>"]
 edition = "2018"
+description = "A command line tool to search and display documentation from Mozilla Developer Network"
+license = "MIT"
+repository = "https://github.com/chrisdickinson/mdn-cli"
+homepage = "https://github.com/chrisdickinson/mdn-cli"
 
 [dependencies]
 anyhow = "1.0.32"
