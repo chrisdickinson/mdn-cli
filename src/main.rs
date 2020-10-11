@@ -89,6 +89,7 @@ USAGE:
     loading.swap(false, Ordering::Relaxed);
     async_std::task::sleep(Duration::from_millis(200)).await;
 
+    #[cfg(unix)]
     pager::Pager::with_pager("less -r").setup();
     std::io::stdout().write_all(b"\x1b[4m(Results from DuckDuckGo)\x1b[0m\n\n")?;
     std::io::stdout().write_all(html2text::from_read(html.as_bytes(), term_width).as_bytes())?;

@@ -10,9 +10,11 @@ surf = "2.0.0"
 urlencoding = "1.1.1"
 scraper = "0.12.0"
 html2text = "0.2.1"
-pager = "0.15.0"
 term_size = "0.3.2"
 
 [dependencies.async-std]
 version = "1.6.5"
 features = ["attributes"]
+
+[target.'cfg(unix)'.dependencies]
+pager = "0.15.0"
