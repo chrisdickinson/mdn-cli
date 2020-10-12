@@ -25,7 +25,7 @@ Results via DuckDuckGo's [Instant Answer] API.
 Crates:
 
 - [`html2text`](https://lib.rs/html2text)
-- [`pager`](https://lib.rs/pager)
+- [`bat`](https://lib.rs/bat)
 - [`scraper`](https://lib.rs/scraper)
 - [`surf`](https://lib.rs/surf)
 - [`term_size`](https://lib.rs/term_size)
