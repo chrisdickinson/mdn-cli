@@ -1,9 +1,5 @@
 use bat::{Input, PagingMode, PrettyPrinter};
 use std::io::Write;
-use std::sync::{
-    atomic::{AtomicBool, Ordering},
-    Arc,
-};
 use std::time::Duration;
 
 #[async_std::main]
@@ -31,21 +27,6 @@ USAGE:
     let args = args.join(" ");
     let query = urlencoding::encode(args.as_str());
 
-    let loading = Arc::new(AtomicBool::new(true));
-    let loading_clone = Arc::clone(&loading);
-    async_std::task::spawn(async move {
-        for chr in "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏".chars().cycle() {
-            let mut stdout = std::io::stdout();
-            write!(stdout, "\r {} Fetching results from DuckDuckGo...", chr).ok();
-            stdout.flush().ok();
-
-            async_std::task::sleep(Duration::from_millis(32)).await;
-            if !loading_clone.load(Ordering::Relaxed) {
-                break;
-            }
-        }
-    });
-
     let url = format!("https://api.duckduckgo.com/?q={}&format=json", query);
     let response = surf::get(url.as_str()).await?;
     let location = response
@@ -54,7 +35,6 @@ USAGE:
         .unwrap_or_else(Default::default);
 
     if location.is_empty() {
-        loading.swap(false, Ordering::Relaxed);
         async_std::task::sleep(Duration::from_millis(200)).await;
 
         std::io::stderr().write_all(b" No results.")?;
@@ -79,9 +59,6 @@ USAGE:
     } else {
         120
     };
-
-    loading.swap(false, Ordering::Relaxed);
-    async_std::task::sleep(Duration::from_millis(200)).await;
 
     let markdown = html2text::from_read(html.as_bytes(), term_width);
     PrettyPrinter::new()
