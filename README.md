@@ -32,7 +32,13 @@ Crates:
 
 ## Installation
 
-TODO
+You must have rust installed in order to use mdn-cli, to create the binary for mdn-cli:
+
+```sh
+  git clone https://github.com/chrisdickinson/mdn-cli.git
+  cd mdn-cli/
+  cargo install --path .
+```
 
 ## License
 
