@@ -64,14 +64,7 @@ USAGE:
     let body = surf::get(location.as_str()).recv_string().await?;
 
     let document = scraper::Html::parse_document(body.as_str());
-    let title_h1_sel = scraper::Selector::parse("header h1.title").unwrap();
-    let article_sel = scraper::Selector::parse("article#wikiArticle").unwrap();
-
-    let title = document
-        .select(&title_h1_sel)
-        .next()
-        .map(|xs| xs.inner_html())
-        .unwrap_or_else(|| "".to_string());
+    let article_sel = scraper::Selector::parse("article.main-page-content").unwrap();
 
     let article = document
         .select(&article_sel)
@@ -79,7 +72,7 @@ USAGE:
         .map(|xs| xs.inner_html())
         .unwrap_or_else(|| "".to_string());
 
-    let html = format!("<h1>{}</h1><article>{}</article>", title, article);
+    let html = format!("<article>{}</article>", article);
 
     let term_width = if let Some((w, _)) = term_size::dimensions() {
         w
