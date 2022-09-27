@@ -4,7 +4,7 @@ use std::time::Duration;
 
 #[async_std::main]
 async fn main() -> Result<(), surf::Error> {
-    //→ curl -I 'https://api.duckduckgo.com/?format=json&q=%21%20site%3Adeveloper.mozilla.org%20accept-header'
+    //→ curl -I 'https://duckduckgo.com/?format=json&q=%21%20site%3Adeveloper.mozilla.org%20accept-header'
     let args: Vec<String> = std::iter::once("! site:developer.mozilla.org".to_string())
         .chain(std::env::args().skip(1))
         .collect();
@@ -27,7 +27,7 @@ USAGE:
     let args = args.join(" ");
     let query = urlencoding::encode(args.as_str());
 
-    let url = format!("https://api.duckduckgo.com/?q={}&format=json", query);
+    let url = format!("https://duckduckgo.com/?q={}&format=json", query);
     let response = surf::get(url.as_str()).await?;
     let location = response
         .header("location")
